@@ -8,8 +8,8 @@ const int N = 5;
 struct Student
 {
     int id;
-    char name[50];
-    char major[50];
+    char name[20];
+    char major[20];
     Student *next;
 };
 
@@ -18,9 +18,34 @@ void printStudent(Student *head);
 
 Student *makeStudent()
 {
-    /*******************************
-     * Code your program here
-     *******************************/
+    Student *head, *tmp, *prev;
+    char tstr[10];
+    ifstream ifs;
+    ifs.open("students.txt");
+    if(!ifs)
+    {
+        cerr << "Error: file open error" << endl;
+        exit(0);
+    }
+
+    for(int i=0; i<N; i++)
+    {
+        tmp = (Student *) malloc(sizeof(Student));
+        ifs.getline(tstr, 20, ' ');
+        tmp->id = atoi(tstr);
+        ifs.getline(tmp->name, 20, ' ');
+        ifs.getline(tmp->major, 20);
+        tmp->next = NULL;
+        if (i==0){
+            head = tmp;
+            prev = tmp;
+        }else {
+            prev->next = tmp;
+            prev = tmp;
+        }
+    }
+    ifs.close();
+    return head;
 }
 void printStudent(Student *head)
 {
@@ -33,7 +58,5 @@ void printStudent(Student *head)
         cout << tmp->major << "\n";
         tmp = tmp->next;
     }
-    /*******************************
-     * Code your program here
-     *******************************/
+
 }
